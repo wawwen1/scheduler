@@ -1,10 +1,10 @@
 export function getAppointmentsForDay(state, day) {
   //only display the data the matches the "day"
-  const filteredDays = state.days.filter(res => res.name === day);
+  const filteredDays = state.days.filter((res) => res.name === day);
 
   //excludes empty data + compare id with "state.appointment"
   if (filteredDays.length > 0) {
-    const appts = filteredDays[0].appointments.map(apptsID => {
+    const appts = filteredDays[0].appointments.map((apptsID) => {
       return state.appointments[apptsID];
     });
     //return matched value
@@ -12,4 +12,17 @@ export function getAppointmentsForDay(state, day) {
   }
   //return empty array
   return filteredDays;
+}
+
+export function getInterview(state, interview) {
+  if (!interview) {
+    return null;
+  }
+
+  const results = {
+    student: interview.student,
+    interviewer: state.interviewers[interview.interviewer],
+  };
+
+  return results;
 }
