@@ -1,7 +1,6 @@
 import React from "react";
 import InterviewerListItem from "./InterviewerListItem";
 import "components/InterviewerList.scss";
-import { action } from "@storybook/addon-actions";
 
 export default function InterviewerList(props) {
   const interviewers = props.interviewers.map((interviewer) => {
