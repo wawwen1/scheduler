@@ -5,27 +5,22 @@ export default function useVisualMode(initial) {
   const [history, setHistory] = useState([initial]);
 
   function transition(mode, replace = false) {
-    setMode(mode);
-    setHistory((history) => {
-      if (replace) {
-        const newHistory = [...history];
-        newHistory.splice(-1 ,1, mode);
-        return newHistory;
-      } else {
-        return [...history, mode];
-      }
-    })
+    if (replace) {
+      setHistory((prev) => {
+        return [...prev.slice(0, -1), mode];
+      });
+    } else {
+      return [...prev, mode];
+    }
   }
 
   function back() {
-    setHistory((history) => {
-      if (mode === initial) {
-        return;
-      }
-      const newHistory = [...history].slice(0, -1);
-      setMode(newHistory[newHistory.length - 1]);
-      return newHistory;
-    });
+    if (history.length > 1) {
+      setHistory((prev) => {
+        return [...prev.slice(0, -1)];
+      });
+      setMode(history[history.length - 1]);
+    }
   }
 
   return { mode, transition, back };
