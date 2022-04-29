@@ -50,8 +50,9 @@ export default function Application(props) {
           alt="Lighthouse Labs"
         />
       </section>
-      <section className="schedule">{newAppointment}</section>
+      <section className="schedule">{newAppointment}
       <Appointment key="last" time="5pm" />
+      </section>
     </main>
   );
 }
