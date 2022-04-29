@@ -12,29 +12,25 @@ export default function useApplicationData() {
   const setDay = (day) => setState({ ...state, day });
 
   function updateSpots(state) {
+    //map through each day
     const newDays = state.days.map((day) => {
       let spots = 0;
+      //grab appointments array of each day
       const appointmentsForDay = day.appointments;
       for (let appointmentsId of appointmentsForDay) {
+        //use ID to match the appointment
         let selectedAppointment = state.appointments[appointmentsId];
+        //find null to increase spots counter
         if (selectedAppointment.interview == null) {
           spots++;
         }
       }
+      //spread operator to prevent altering original "day"
       return { ...day, spots };
     });
+    //return result of the map
     return newDays;
   }
-  // const day = state.days.find((day) => day.name === state.day);
-  // const dayApps = day.appointments.map((app) => state.appointments[app]);
-
-  // let spots = 0;
-  // for (let app of dayApps) {
-  //   if (!app.interview) {
-  //     spots++;
-  //   }
-  // }
-  // return spots;
 
   function bookInterview(id, interview) {
     const appointment = {
@@ -54,7 +50,7 @@ export default function useApplicationData() {
         ...state,
         appointments,
         days: updatedDaysArray,
-      })
+      });
     });
   }
 
@@ -76,7 +72,7 @@ export default function useApplicationData() {
         ...state,
         appointment,
         days: updatedDaysArray,
-      })
+      });
     });
   }
 
