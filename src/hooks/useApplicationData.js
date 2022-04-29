@@ -12,17 +12,29 @@ export default function useApplicationData() {
   const setDay = (day) => setState({ ...state, day });
 
   function updateSpots(state) {
-    const day = state.days.find((day) => day.name === state.day);
-    const dayApps = day.appointments.map((app) => state.appointments[app]);
-
-    let spots = 0;
-    for (let app of dayApps) {
-      if (!app.interview) {
-        spots++;
+    const newDays = state.days.map((day) => {
+      let spots = 0;
+      const appointmentsForDay = day.appointments;
+      for (let appointmentsId of appointmentsForDay) {
+        let selectedAppointment = state.appointments[appointmentsId];
+        if (selectedAppointment.interview == null) {
+          spots++;
+        }
       }
-    }
-    return spots;
+      return { ...day, spots };
+    });
+    return newDays;
   }
+  // const day = state.days.find((day) => day.name === state.day);
+  // const dayApps = day.appointments.map((app) => state.appointments[app]);
+
+  // let spots = 0;
+  // for (let app of dayApps) {
+  //   if (!app.interview) {
+  //     spots++;
+  //   }
+  // }
+  // return spots;
 
   function bookInterview(id, interview) {
     const appointment = {
@@ -34,14 +46,15 @@ export default function useApplicationData() {
       [id]: appointment,
     };
 
-    const spots = updateSpots(state);
+    const newState = { ...state, appointments };
+    const updatedDaysArray = updateSpots(newState);
 
-    return axios.put(`/api/appointments/${id}`, { interview }).then(() => {
+    return axios.put(`/api/appointments/${id}`, appointment).then(() => {
       setState({
         ...state,
         appointments,
-        days: spots
-      }).catch((err) => console.log(err));
+        days: updatedDaysArray,
+      })
     });
   }
 
@@ -55,14 +68,15 @@ export default function useApplicationData() {
       [id]: appointment,
     };
 
-    const spots = updateSpots(state)
+    const newState = { ...state, appointments };
+    const updatedDaysArray = updateSpots(newState);
 
     return axios.delete(`/api/appointments/${id}`).then(() => {
       setState({
         ...state,
         appointment,
-        days: spots
-      }).catch((err) => console.log(err));
+        days: updatedDaysArray,
+      })
     });
   }
 
