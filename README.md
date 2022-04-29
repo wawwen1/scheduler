@@ -4,7 +4,7 @@ Interview Scheduler is an app that allows users to create, edit and delete inter
 
 ### Booking an interview
 
-!["booking"](.docs/interview-home.gif)
+!["booking"](https://github.com/wawwen1/scheduler/blob/master/docs/interview-home.gif?raw=true)
 
 ## Dependencies
 - Node
